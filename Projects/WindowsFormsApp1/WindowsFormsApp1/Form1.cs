@@ -32,16 +32,15 @@ namespace WindowsFormsApp1
 
     public partial class Form1 : Form
     {
-        string[] strs = { "fdgdfgfdgdgdfggfdgdgfdgwgg", "abc", "bbbb", "gghfh", "gfdgdfgdsgsdfgdgs" };
+        string[] strs = { "hghgh", "hgdhgfh", "gfgdfdgd", "hghghgfhfhhwhrthrtether", "hgghgfh" };
         SortType st;
         SortMethod sm;
-        private delegate void SetPropertyThreadSafeDelegate<TResult>(
-        Control @this,
-        Expression<Func<TResult>> property,
-        TResult value); 
+        private Thread progressThread = null;
+        private string fname = null;
         public Form1()
         {
             InitializeComponent();
+            ViewController.SetForm(this);
 
         }
 
@@ -58,55 +57,98 @@ namespace WindowsFormsApp1
         private void SortType_CheckedChanged(object sender, EventArgs e)
         {
             st = (SortType)Enum.Parse(typeof(SortType), (sender as RadioButton).Name);
-
         }
 
         private void SortMethod_CheckedChanged(object sender, EventArgs e)
         {
+            sm = (SortMethod)Enum.Parse(typeof(SortType), (sender as RadioButton).Name);
 
         }
 
-        private async void start_Click(object sender, EventArgs e)
+        private void start_Click(object sender, EventArgs e)
         {
-            int[] sortedIndexs = strs.CountByLength();
-            Series series = new Series("Length");
-            String str;
+            //strs = System.IO.File.ReadAllLines(fname);
 
-            for (int index = strs.Length - 1, index2 = 0, tmp; index > 0; --index)
+            progressThread = new Thread(
+                Sort
+            );
+            progressThread?.Start();
+        }
+        public void Sort()
+        {
+            int[] sortedArrByIndexes = new int[strs.Length];
+            switch (st)
             {
-                while (index2 < index)
-                {
-                    if (sortedIndexs[index2] > sortedIndexs[index2 + 1])
+                case SortType.lettersCount:
                     {
-                        tmp = sortedIndexs[index2];
-                        sortedIndexs[index2] = sortedIndexs[index2 + 1];
-                        sortedIndexs[index2 + 1] = tmp;
-
-                        str = strs[index2];
-                        strs[index2] = strs[index2 + 1];
-                        strs[index2 + 1] = str;
-                        series = new Series("Length");
-                        for (int index3 = 0, length = strs.Length; index3 < length; ++index3)
-                        {
-                            series.Points.AddXY(index3, sortedIndexs[index3]);
-                        }
-
-                        this.Result.Series.Clear();
-                        this.bubble.Invoke((MethodInvoker)delegate {
-                            // Running on the UI thread
-                            this.Result.Series.Add(series);
-                        });
-                        Thread.Sleep(500);
+                        sortedArrByIndexes = SortingTypes.CountByLettersA(strs);
+                        break;
                     }
-                    ++index2;
-                }
-                index2 = 0;
+                case SortType.lineLength:
+                    {
+                        sortedArrByIndexes = SortingTypes.CountByLength(strs);
+                        break;
+                    }
+                case SortType.wordsCount:
+                    {
+                        sortedArrByIndexes = SortingTypes.CountByWords(strs);
+                        break;
+                    }
+                case SortType.signsCount:
+                    {
+                        sortedArrByIndexes = SortingTypes.CountByPunctSings(strs);
+                        break;
+                    }
+                default:
+                    break;
+            }
+            try
+            { 
+            switch (sm)
+            {
+                case SortMethod.Bubble:
+                    {
+                        Sorting.BubbleSort(strs, sortedArrByIndexes);
+                        break;
+                    }
+                case SortMethod.Insertion:
+                    {
+                        Sorting.InsertSort(strs, sortedArrByIndexes);
+                        break;
+                    }
+                case SortMethod.Selection:
+                    {
+                        Sorting.SelectionSort(strs, sortedArrByIndexes);
+
+                        break;
+                    }
+                case SortMethod.Shell:
+                    {
+                        Sorting.ShellSorting(strs, sortedArrByIndexes);
+                        break;
+                    }
+                default:
+                    break; }
+                    catch (ThreadAbortException ex)
+                    {
+                        MessageBox.Show("Goodbye :(");
+          
+                    }
             }
         }
-        public void BubbleSort(Series series)
+      
+        private void button1_MouseClick(object sender, MouseEventArgs e)
         {
-
+            OpenFileDialog fdlg = new OpenFileDialog();
+            fdlg.Title = "File Dialog";
+            fdlg.InitialDirectory = @"c:\";
+            fdlg.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
+            fdlg.FilterIndex = 2;
+            fdlg.RestoreDirectory = true;
+            if (fdlg.ShowDialog() == DialogResult.OK)
+            {
+                fname = fdlg.FileName;
+            }
         }
-
     }
 }

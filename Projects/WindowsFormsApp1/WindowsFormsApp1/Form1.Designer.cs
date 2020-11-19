@@ -28,9 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.Result = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.sortType = new System.Windows.Forms.GroupBox();
             this.wordsCount = new System.Windows.Forms.RadioButton();
@@ -44,6 +44,8 @@
             this.selection = new System.Windows.Forms.RadioButton();
             this.bubble = new System.Windows.Forms.RadioButton();
             this.start = new System.Windows.Forms.Button();
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.Result)).BeginInit();
             this.sortType.SuspendLayout();
             this.sortMethod.SuspendLayout();
@@ -51,17 +53,17 @@
             // 
             // Result
             // 
-            chartArea2.Name = "ChartArea1";
-            this.Result.ChartAreas.Add(chartArea2);
+            chartArea1.Name = "ChartArea1";
+            this.Result.ChartAreas.Add(chartArea1);
             this.Result.Dock = System.Windows.Forms.DockStyle.Fill;
-            legend2.Name = "Legend1";
-            this.Result.Legends.Add(legend2);
+            legend1.Name = "Legend1";
+            this.Result.Legends.Add(legend1);
             this.Result.Location = new System.Drawing.Point(0, 0);
             this.Result.Name = "Result";
-            series2.ChartArea = "ChartArea1";
-            series2.Legend = "Legend1";
-            series2.Name = "Series1";
-            this.Result.Series.Add(series2);
+            series1.ChartArea = "ChartArea1";
+            series1.Legend = "Legend1";
+            series1.Name = "Series1";
+            this.Result.Series.Add(series1);
             this.Result.Size = new System.Drawing.Size(800, 450);
             this.Result.TabIndex = 0;
             this.Result.Click += new System.EventHandler(this.Result_Click);
@@ -73,7 +75,7 @@
             this.sortType.Controls.Add(this.signsCount);
             this.sortType.Controls.Add(this.lineLength);
             this.sortType.Controls.Add(this.lettersCount);
-            this.sortType.Location = new System.Drawing.Point(694, 120);
+            this.sortType.Location = new System.Drawing.Point(694, 112);
             this.sortType.Name = "sortType";
             this.sortType.Size = new System.Drawing.Size(106, 135);
             this.sortType.TabIndex = 4;
@@ -198,7 +200,7 @@
             // 
             // start
             // 
-            this.start.Location = new System.Drawing.Point(700, 280);
+            this.start.Location = new System.Drawing.Point(705, 412);
             this.start.Name = "start";
             this.start.Size = new System.Drawing.Size(97, 23);
             this.start.TabIndex = 5;
@@ -206,11 +208,26 @@
             this.start.UseVisualStyleBackColor = true;
             this.start.Click += new System.EventHandler(this.start_Click);
             // 
+            // openFileDialog1
+            // 
+            this.openFileDialog1.FileName = "openFileDialog1";
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(694, 266);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(97, 23);
+            this.button1.TabIndex = 6;
+            this.button1.Text = "Открыть файл";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.button1_MouseClick);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.start);
             this.Controls.Add(this.sortMethod);
             this.Controls.Add(this.sortType);
@@ -242,6 +259,8 @@
         private System.Windows.Forms.RadioButton selection;
         private System.Windows.Forms.RadioButton bubble;
         private System.Windows.Forms.Button start;
+        private System.Windows.Forms.OpenFileDialog openFileDialog1;
+        private System.Windows.Forms.Button button1;
     }
 }
 
