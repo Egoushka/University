@@ -8,43 +8,38 @@ namespace WindowsFormsApp1
     internal static class Sorting
     {
         static object locker = new object();
-        private static Thread progressThread = new Thread(new ParameterizedThreadStart(ViewController.ChageChart));
         static public void BubbleSort(String[] strs, int[] sortedIndexs)
         {
             String str;
             int length = strs.Length;
             Series series = new Series("Length");
+
+            ViewController.ChageChart(sortedIndexs);
             try
-            {             
-                    for (int index = strs.Length - 1, index2 = 0, tmp; index > 0; --index)
+            {
+                for (int index = strs.Length - 1, index2 = 0, tmp; index > 0; --index)
+                {
+                    while (index2 < index)
                     {
-                        while (index2 < index)
+                        if (sortedIndexs[index2] > sortedIndexs[index2 + 1])
                         {
-                            if (sortedIndexs[index2] > sortedIndexs[index2 + 1])
-                            {
-                                tmp = sortedIndexs[index2];
-                                sortedIndexs[index2] = sortedIndexs[index2 + 1];
-                                sortedIndexs[index2 + 1] = tmp;
+                            tmp = sortedIndexs[index2];
+                            sortedIndexs[index2] = sortedIndexs[index2 + 1];
+                            sortedIndexs[index2 + 1] = tmp;
 
-                                str = strs[index2];
-                                strs[index2] = strs[index2 + 1];
-                                strs[index2 + 1] = str;
-
-                                for (int index3 = 0; index3 < length; ++index3)
-                                {
-                                    series.Points.AddXY(index3, sortedIndexs[index3]);
-                                }
-                            progressThread = new Thread(new ParameterizedThreadStart(ViewController.ChageChart));
-                            progressThread.Start(series);
+                            str = strs[index2];
+                            strs[index2] = strs[index2 + 1];
+                            strs[index2 + 1] = str;
+                            ViewController.ChageChart(sortedIndexs);
 
 
-                                //ViewController.ChageChart(series);
-                                Thread.Sleep(500);
 
-                            }
-                            ++index2;
+                            Thread.Sleep(500);
+
                         }
-                        index2 = 0;             
+                        ++index2;
+                    }
+                    index2 = 0;
                 }
             }
             catch (ThreadAbortException ex)
@@ -78,11 +73,8 @@ namespace WindowsFormsApp1
                         tmpStr = strs[k];
                         strs[k] = strs[i];
                         strs[i] = tmpStr;
-                        for (int index3 = 0; index3 < length; ++index3)
-                        {
-                            series.Points.AddXY(index3, sortedIndexs[index3]);
-                        }
-                        ViewController.ChageChart(series);
+                        ViewController.ChageChart(sortedIndexs);
+
                         Thread.Sleep(500);
                     }
                 }
@@ -115,11 +107,8 @@ namespace WindowsFormsApp1
                             index2--;
                             sortedIndexs[index2 + 1] = tmpInt;
                             strs[index2 + 1] = tmpStr;
-                            for (int index3 = 0; index3 < length; ++index3)
-                            {
-                                series.Points.AddXY(index3, sortedIndexs[index3]);
-                            }
-                            ViewController.ChageChart(series);
+                            ViewController.ChageChart(sortedIndexs);
+
                             Thread.Sleep(500);
                         }
                         else
@@ -154,11 +143,8 @@ namespace WindowsFormsApp1
                             tmpStr = strs[j];
                             strs[j] = strs[j + step];
                             strs[j + step] = tmpStr;
-                            for (int index3 = 0; index3 < length; ++index3)
-                            {
-                                series.Points.AddXY(index3, sortedIndexs[index3]);
-                            }
-                            ViewController.ChageChart(series);
+
+                            ViewController.ChageChart(sortedIndexs);
                             Thread.Sleep(500);
                         }
                     }

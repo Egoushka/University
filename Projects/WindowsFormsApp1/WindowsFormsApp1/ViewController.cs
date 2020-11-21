@@ -19,11 +19,15 @@ namespace WindowsFormsApp1
                 f1 = form;
             }
         }
-        public static void ChageChart(object series)
+        public static void ChageChart(int[] sortedIndexs)
         {
             lock (locker)
             {
-                Series srs = (Series)series;
+                Series srs = new Series("Length");
+                for (int index3 = 0, length = sortedIndexs.Length; index3 < length; ++index3)
+                {
+                    srs.Points.AddXY(index3, sortedIndexs[index3]);
+                }
                 f1.Invoke(new Action(() =>
                 {
                     (f1.Controls[_result] as Chart).Series.Clear();
